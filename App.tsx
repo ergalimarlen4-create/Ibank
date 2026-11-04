@@ -12,6 +12,14 @@ import { OtpVerificationScreen } from './src/screens/OtpVerificationScreen';
 import { ResetPasswordScreen } from './src/screens/ResetPasswordScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { CardDetailsScreen } from './src/screens/CardDetailsScreen';
+import { SearchScreen } from './src/screens/SearchScreen';
+import { InterestRateScreen } from './src/screens/InterestRateScreen';
+import { ExchangeRateScreen } from './src/screens/ExchangeRateScreen';
+import { LanguageScreen } from './src/screens/LanguageScreen';
+import { ExchangeScreen } from './src/screens/ExchangeScreen';
+
+
+
 
 const Stack = createStackNavigator();
 
@@ -29,6 +37,11 @@ export default function App() {
         <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="CardDetails" component={CardDetailsScreen} />
+        <Stack.Screen name="Search" component={SearchScreen} />
+<Stack.Screen name="InterestRate" component={InterestRateScreen} />
+<Stack.Screen name="ExchangeRate" component={ExchangeRateScreen} />
+<Stack.Screen name="Language" component={LanguageScreen} />
+<Stack.Screen name="Exchange" component={ExchangeScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
