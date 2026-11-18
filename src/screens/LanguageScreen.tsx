@@ -1,39 +1,41 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import Header from '../components/Header';
+import { useLang } from '../i18n';
+import { colors, fonts } from '../theme';
+import { ScreenProps } from '../navigation/types';
 
-export const LanguageScreen = ({ navigation }: any) => {
-  const [selected, setSelected] = useState('English');
-  const languages = ['Vietnamese', 'French', 'English', 'Japanese', 'Portuguese', 'China', 'Korea', 'Nicaragua', 'Russia'];
+const langs = [
+  { code: 'kk', flag: '🇰🇿', name: 'Қазақша' },
+  { code: 'ru', flag: '🇷🇺', name: 'Русский' },
+  { code: 'en', flag: '🇬🇧', name: 'English' },
+] as const;
 
+export default function LanguageScreen({ navigation }: ScreenProps<'Language'>) {
+  const { lang, setLang, t } = useLang();
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.topBar}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="chevron-back" size={24} color="#1A1D1E" />
-        </TouchableOpacity>
-        <Text style={styles.title}>Language</Text>
-        <View style={{ width: 24 }} />
-      </View>
-
-      <FlatList
-        data={languages}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.row} onPress={() => setSelected(item)}>
-            <Text style={[styles.langText, selected === item && { color: '#4A3AFF', fontWeight: '700' }]}>{item}</Text>
-            {selected === item && <Ionicons name="checkmark" size={20} color="#4A3AFF" />}
-          </TouchableOpacity>
-        )}
-      />
-    </SafeAreaView>
+    <View style={styles.root}>
+      <Header light title={t('Language')} onBack={navigation.goBack} />
+      <ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
+        {langs.map((l) => {
+          const on = l.code === lang;
+          return (
+            <Pressable key={l.code} style={styles.row} onPress={() => setLang(l.code)}>
+              <Text style={styles.flag}>{l.flag}</Text>
+              <Text style={[styles.name, on && styles.nameOn]}>{l.name}</Text>
+              {on && <Ionicons name="checkmark" size={18} color={colors.primary} />}
+            </Pressable>
+          );
+        })}
+      </ScrollView>
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 20 },
-  topBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginVertical: 16 },
-  title: { fontSize: 18, fontWeight: '700', color: '#1A1D1E' },
-  row: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 16, borderBottomWidth: 1, borderBottomColor: '#F2F2F7', alignItems: 'center' },
-  langText: { fontSize: 15, color: '#1A1D1E' },
+  root: { flex: 1, backgroundColor: '#fff' },
+  row: { flexDirection: 'row', alignItems: 'center', height: 56, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.border },
+  flag: { fontSize: 22, width: 40 },
+  name: { flex: 1, fontFamily: fonts.regular, fontSize: 12, color: colors.muted },
+  nameOn: { fontFamily: fonts.medium, color: colors.text },
 });

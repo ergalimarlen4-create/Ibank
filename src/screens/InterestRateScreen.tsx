@@ -1,54 +1,46 @@
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { useLang } from '../i18n';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import Header from '../components/Header';
+import { colors, fonts } from '../theme';
+import { ScreenProps } from '../navigation/types';
 
-export const InterestRateScreen = ({ navigation }: any) => {
-  const rates = [
-    { kind: 'Individual customers', term: '1m', rate: '4.50%' },
-    { kind: 'Corporate customers', term: '2m', rate: '5.50%' },
-    { kind: 'Individual customers', term: '1m', rate: '4.50%' },
-    { kind: 'Corporate customers', term: '6m', rate: '2.50%' },
-    { kind: 'Individual customers', term: '1m', rate: '4.50%' },
-    { kind: 'Corporate customers', term: '8m', rate: '6.50%' },
-  ];
+const I = 'Individual customers';
+const C = 'Corporate customers';
+const rows = [
+  [I, '1m', '4.50%'], [C, '2m', '5.50%'], [I, '1m', '4.50%'], [C, '6m', '2.50%'],
+  [I, '1m', '4.50%'], [C, '8m', '6.50%'], [I, '1m', '4.50%'], [I, '1m', '4.50%'],
+  [C, '7m', '6.80%'], [I, '1m', '4.50%'], [I, '12m', '5.90%'],
+];
 
+export default function InterestRateScreen({ navigation }: ScreenProps<'InterestRate'>) {
+  const { t } = useLang();
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.topBar}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="chevron-back" size={24} color="#1A1D1E" />
-        </TouchableOpacity>
-        <Text style={styles.title}>Interest rate</Text>
-        <View style={{ width: 24 }} />
+    <View style={styles.root}>
+      <Header light title={t('Interest rate')} onBack={navigation.goBack} />
+      <View style={styles.head}>
+        <Text style={[styles.th, { flex: 1 }]}>{t('Interest kind')}</Text>
+        <Text style={[styles.th, styles.col]}>{t('Deposit')}</Text>
+        <Text style={[styles.th, styles.col]}>{t('Rate')}</Text>
       </View>
-
-      <View style={styles.tableHeader}>
-        <Text style={[styles.columnText, { flex: 2 }]}>Interest kind</Text>
-        <Text style={[styles.columnText, { flex: 1, textAlign: 'center' }]}>Deposit</Text>
-        <Text style={[styles.columnText, { flex: 1, textAlign: 'right' }]}>Rate</Text>
-      </View>
-
-      <FlatList
-        data={rates}
-        keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.row}>
-            <Text style={[styles.rowText, { flex: 2, color: '#1A1D1E' }]}>{item.kind}</Text>
-            <Text style={[styles.rowText, { flex: 1, textAlign: 'center', color: '#6C727F' }]}>{item.term}</Text>
-            <Text style={[styles.rowText, { flex: 1, textAlign: 'right', color: '#4A3AFF', fontWeight: '700' }]}>{item.rate}</Text>
+      <ScrollView contentContainerStyle={{ paddingBottom: 24 }}>
+        {rows.map(([kind, dep, rate], i) => (
+          <View key={i} style={styles.row}>
+            <Text style={[styles.td, { flex: 1 }]}>{t(kind)}</Text>
+            <Text style={[styles.td, styles.col]}>{dep}</Text>
+            <Text style={[styles.td, styles.col, styles.rate]}>{rate}</Text>
           </View>
-        )}
-      />
-    </SafeAreaView>
+        ))}
+      </ScrollView>
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 20 },
-  topBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginVertical: 16 },
-  title: { fontSize: 18, fontWeight: '700', color: '#1A1D1E' },
-  tableHeader: { flexDirection: 'row', paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: '#E5E7EB' },
-  columnText: { fontSize: 13, fontWeight: '600', color: '#8E8E93' },
-  row: { flexDirection: 'row', paddingVertical: 16, borderBottomWidth: 1, borderBottomColor: '#F2F2F7', alignItems: 'center' },
-  rowText: { fontSize: 14 },
+  root: { flex: 1, backgroundColor: colors.screen },
+  head: { flexDirection: 'row', paddingHorizontal: 20, paddingVertical: 12 },
+  th: { fontFamily: fonts.regular, fontSize: 10, color: colors.muted },
+  row: { flexDirection: 'row', paddingHorizontal: 20, height: 38, alignItems: 'center', borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.border },
+  td: { fontFamily: fonts.regular, fontSize: 10, color: colors.text },
+  col: { width: 56, textAlign: 'right' },
+  rate: { fontFamily: fonts.medium, color: colors.primary },
 });

@@ -1,96 +1,85 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
+import { useLang } from '../i18n';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { colors, fonts, radius } from '../theme';
+import BottomTabBar from '../components/BottomTabBar';
+import { ScreenProps } from '../navigation/types';
 
-export const HomeScreen = ({ navigation }: any) => {
+type Icon = keyof typeof Ionicons.glyphMap;
+
+const actions: { label: string; icon: Icon; color: string }[] = [
+  { label: 'Account\nand Card', icon: 'wallet', color: colors.primary },
+  { label: 'Transfer', icon: 'swap-horizontal', color: colors.danger },
+  { label: 'Withdraw', icon: 'arrow-down-circle', color: '#3B82F6' },
+  { label: 'Mobile\nprepaid', icon: 'phone-portrait', color: colors.warning },
+  { label: 'Pay the\nbill', icon: 'receipt', color: colors.success },
+  { label: 'Save\nonline', icon: 'cash', color: colors.primary },
+  { label: 'Credit\ncard', icon: 'card', color: '#F97316' },
+  { label: 'Transaction\nreport', icon: 'document-text', color: colors.primary },
+  { label: 'Beneficiary', icon: 'person-add', color: colors.danger },
+];
+
+export default function HomeScreen({ navigation }: ScreenProps<'Home'>) {
+  const { t } = useLang();
+  const insets = useSafeAreaInsets();
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scroll}>
-        {/* Header */}
-        <View style={styles.topBar}>
-          <View>
-            <Text style={styles.greeting}>Welcome back,</Text>
-            <Text style={styles.userName}>John Smith</Text>
+    <View style={styles.root}>
+      <View style={[styles.top, { paddingTop: insets.top + 12 }]}>
+        <View style={styles.avatar}><Ionicons name="person" size={20} color={colors.primary} /></View>
+        <Text style={styles.hi}>{t('Hi')}, Push Puttichai</Text>
+        <Ionicons name="notifications" size={20} color="#fff" />
+      </View>
+
+      <ScrollView style={styles.sheet} contentContainerStyle={{ padding: 16 }}>
+        <View style={styles.card}>
+          <View style={styles.cardCircle} />
+          <Text style={styles.holder}>John Smith</Text>
+          <Text style={styles.cardType}>Amazon Platinium</Text>
+          <Text style={styles.number}>4756   ••••  ••••   9018</Text>
+          <View style={styles.cardBottom}>
+            <Text style={styles.balance}>$3.469.52</Text>
+            <Text style={styles.visa}>VISA</Text>
           </View>
-          <TouchableOpacity style={styles.profileBadge}>
-            <Ionicons name="person" size={20} color="#FFF" />
-          </TouchableOpacity>
         </View>
 
-        {/* Card */}
-        <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('CardDetails')}>
-          <Text style={styles.cardType}>iBank Premium</Text>
-          <Text style={styles.cardNumber}>**** **** **** 4829</Text>
-          <View style={styles.cardFooter}>
-            <View>
-              <Text style={styles.cardLabel}>Balance</Text>
-              <Text style={styles.cardBalance}>$24,850.00</Text>
-            </View>
-            <Text style={styles.cardExpiry}>08/28</Text>
-          </View>
-        </TouchableOpacity>
-
-        {/* Action Grid */}
         <View style={styles.grid}>
-          {[
-            { title: 'Transfer', icon: 'swap-horizontal' },
-            { title: 'Pay Bills', icon: 'receipt' },
-            { title: 'Top Up', icon: 'add-circle' },
-            { title: 'Withdraw', icon: 'cash' },
-          ].map((item, index) => (
-            <TouchableOpacity key={index} style={styles.gridItem}>
-              <View style={styles.iconCircle}>
-                <Ionicons name={item.icon as any} size={24} color="#4A3AFF" />
-              </View>
-              <Text style={styles.gridTitle}>{item.title}</Text>
-            </TouchableOpacity>
+          {actions.map((a) => (
+            <Pressable
+              key={a.label}
+              style={styles.tile}
+              onPress={() => a.label === 'Transfer' && navigation.navigate('Transfer')}
+            >
+              <Ionicons name={a.icon} size={26} color={a.color} />
+              <Text style={styles.tileText}>{t(a.label)}</Text>
+            </Pressable>
           ))}
         </View>
-
-        {/* Recent Transactions */}
-        <Text style={styles.sectionTitle}>Recent Transactions</Text>
-        {[
-          { title: 'Apple Store', date: 'Today, 14:20', amount: '-$999.00', color: '#1A1D1E' },
-          { title: 'Salary Income', date: 'Yesterday', amount: '+$4,500.00', color: '#10B981' },
-        ].map((tx, idx) => (
-          <View key={idx} style={styles.txRow}>
-            <View style={styles.txIcon}>
-              <Ionicons name="cart-outline" size={20} color="#4A3AFF" />
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.txTitle}>{tx.title}</Text>
-              <Text style={styles.txDate}>{tx.date}</Text>
-            </View>
-            <Text style={[styles.txAmount, { color: tx.color }]}>{tx.amount}</Text>
-          </View>
-        ))}
       </ScrollView>
-    </SafeAreaView>
+
+      <BottomTabBar active="home" />
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F8F9FA' },
-  scroll: { padding: 20 },
-  topBar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
-  greeting: { fontSize: 13, color: '#6C727F' },
-  userName: { fontSize: 20, fontWeight: '700', color: '#1A1D1E' },
-  profileBadge: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#4A3AFF', justifyContent: 'center', alignItems: 'center' },
-  card: { backgroundColor: '#4A3AFF', borderRadius: 20, padding: 20, height: 180, justifyContent: 'space-between', marginBottom: 24 },
-  cardType: { color: '#E0E0FF', fontSize: 14 },
-  cardNumber: { color: '#FFF', fontSize: 18, letterSpacing: 2, fontWeight: '600' },
-  cardFooter: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end' },
-  cardLabel: { color: '#E0E0FF', fontSize: 12 },
-  cardBalance: { color: '#FFF', fontSize: 22, fontWeight: '700' },
-  cardExpiry: { color: '#FFF', fontSize: 14 },
-  grid: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 },
-  gridItem: { alignItems: 'center', width: '22%' },
-  iconCircle: { width: 56, height: 56, borderRadius: 28, backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center', marginBottom: 8 },
-  gridTitle: { fontSize: 12, color: '#1A1D1E', fontWeight: '500' },
-  sectionTitle: { fontSize: 18, fontWeight: '700', color: '#1A1D1E', marginBottom: 12 },
-  txRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#FFF', padding: 16, borderRadius: 12, marginBottom: 8, gap: 12 },
-  txIcon: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#F0EEFF', justifyContent: 'center', alignItems: 'center' },
-  txTitle: { fontSize: 15, fontWeight: '600', color: '#1A1D1E' },
-  txDate: { fontSize: 12, color: '#8E8E93' },
-  txAmount: { fontSize: 15, fontWeight: '700' },
+  root: { flex: 1, backgroundColor: colors.primary },
+  top: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 20, paddingBottom: 16, gap: 10 },
+  avatar: { width: 36, height: 36, borderRadius: 18, backgroundColor: colors.primaryLight, alignItems: 'center', justifyContent: 'center' },
+  hi: { flex: 1, color: '#fff', fontFamily: fonts.medium, fontSize: 12 },
+  sheet: { flex: 1, backgroundColor: '#fff', borderTopLeftRadius: radius.lg, borderTopRightRadius: radius.lg },
+  card: { height: 150, borderRadius: 16, backgroundColor: colors.card, padding: 16, overflow: 'hidden' },
+  cardCircle: { position: 'absolute', right: -40, top: -50, width: 160, height: 160, borderRadius: 80, backgroundColor: colors.cardCircle, opacity: 0.8 },
+  holder: { color: '#fff', fontFamily: fonts.regular, fontSize: 18 },
+  cardType: { color: '#fff', fontFamily: fonts.regular, fontSize: 10, marginTop: 18 },
+  number: { color: '#fff', fontFamily: fonts.regular, fontSize: 11, marginTop: 4 },
+  cardBottom: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: 'auto' },
+  balance: { color: '#fff', fontFamily: fonts.semibold, fontSize: 15 },
+  visa: { color: '#fff', fontFamily: fonts.semibold, fontSize: 16, fontStyle: 'italic' },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginTop: 20 },
+  tile: { width: '31.5%', aspectRatio: 1, borderRadius: 8, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', gap: 8, shadowColor: '#000', shadowOpacity: 0.06, shadowRadius: 8, shadowOffset: { width: 0, height: 2 }, elevation: 2 },
+  tileText: { fontFamily: fonts.regular, fontSize: 8, color: colors.muted, textAlign: 'center' },
+  tabs: { flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', backgroundColor: '#fff', paddingTop: 10 },
+  tabActive: { flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: colors.primary, paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20 },
+  tabActiveText: { color: '#fff', fontFamily: fonts.medium, fontSize: 10 },
 });

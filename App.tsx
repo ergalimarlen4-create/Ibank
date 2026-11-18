@@ -1,48 +1,55 @@
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
+import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold } from '@expo-google-fonts/poppins';
 
-import { SplashScreen } from './src/screens/SplashScreen';
-import { WelcomeScreen } from './src/screens/WelcomeScreen';
-import { SignInScreen } from './src/screens/SignInScreen';
-import { SignUpStep1Screen } from './src/screens/SignUpStep1Screen';
-import { SignUpStep2Screen } from './src/screens/SignUpStep2Screen';
-import { ForgotPasswordScreen } from './src/screens/ForgotPasswordScreen';
-import { OtpVerificationScreen } from './src/screens/OtpVerificationScreen';
-import { ResetPasswordScreen } from './src/screens/ResetPasswordScreen';
-import { HomeScreen } from './src/screens/HomeScreen';
-import { CardDetailsScreen } from './src/screens/CardDetailsScreen';
-import { SearchScreen } from './src/screens/SearchScreen';
-import { InterestRateScreen } from './src/screens/InterestRateScreen';
-import { ExchangeRateScreen } from './src/screens/ExchangeRateScreen';
-import { LanguageScreen } from './src/screens/LanguageScreen';
-import { ExchangeScreen } from './src/screens/ExchangeScreen';
+import { LanguageProvider } from './src/i18n';
+import { RootStackParamList } from './src/navigation/types';
+import SignInScreen from './src/screens/SignInScreen';
+import SignUpScreen from './src/screens/SignUpScreen';
+import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen';
+import OtpScreen from './src/screens/OtpScreen';
+import ChangePasswordScreen from './src/screens/ChangePasswordScreen';
+import PasswordChangedScreen from './src/screens/PasswordChangedScreen';
+import HomeScreen from './src/screens/HomeScreen';
+import SearchScreen from './src/screens/SearchScreen';
+import SearchBranchScreen from './src/screens/SearchBranchScreen';
+import InterestRateScreen from './src/screens/InterestRateScreen';
+import ExchangeRateScreen from './src/screens/ExchangeRateScreen';
+import LanguageScreen from './src/screens/LanguageScreen';
+import ExchangeScreen from './src/screens/ExchangeScreen';
+import TransferScreen from './src/screens/TransferScreen';
 
-
-
-
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
+  const [loaded] = useFonts({ Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold });
+  if (!loaded) return null;
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Welcome" component={WelcomeScreen} />
-        <Stack.Screen name="SignIn" component={SignInScreen} />
-        <Stack.Screen name="SignUpStep1" component={SignUpStep1Screen} />
-        <Stack.Screen name="SignUpStep2" component={SignUpStep2Screen} />
-        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-        <Stack.Screen name="OtpVerification" component={OtpVerificationScreen} />
-        <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="CardDetails" component={CardDetailsScreen} />
-        <Stack.Screen name="Search" component={SearchScreen} />
-<Stack.Screen name="InterestRate" component={InterestRateScreen} />
-<Stack.Screen name="ExchangeRate" component={ExchangeRateScreen} />
-<Stack.Screen name="Language" component={LanguageScreen} />
-<Stack.Screen name="Exchange" component={ExchangeScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <LanguageProvider>
+      <StatusBar style="auto" />
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="SignIn" screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="SignIn" component={SignInScreen} />
+          <Stack.Screen name="SignUp" component={SignUpScreen} />
+          <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+          <Stack.Screen name="Otp" component={OtpScreen} />
+          <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+          <Stack.Screen name="PasswordChanged" component={PasswordChangedScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Search" component={SearchScreen} />
+          <Stack.Screen name="SearchBranch" component={SearchBranchScreen} />
+          <Stack.Screen name="InterestRate" component={InterestRateScreen} />
+          <Stack.Screen name="ExchangeRate" component={ExchangeRateScreen} />
+          <Stack.Screen name="Language" component={LanguageScreen} />
+          <Stack.Screen name="Exchange" component={ExchangeScreen} />
+          <Stack.Screen name="Transfer" component={TransferScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </LanguageProvider>
+    </SafeAreaProvider>
   );
 }
