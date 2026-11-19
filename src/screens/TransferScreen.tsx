@@ -27,7 +27,20 @@ export default function TransferScreen({ navigation }: ScreenProps<'Transfer'>) 
   const [amount, setAmount] = useState('');
   const [content, setContent] = useState('');
   const [save, setSave] = useState(false);
-  const ok = name && card && amount;
+
+  const canGo = true;
+
+  const handleConfirm = () => {
+    (navigation as any).navigate('ConfirmScreen', {
+      fromCard: 'VISA **** **** **** 1234',
+      toName: name.trim() || 'Amanda',
+      cardNumber: card.trim() || '0123456789',
+      fee: '10$',
+      content: content.trim() || 'From Jimy',
+      amount: amount.trim() ? (amount.trim().startsWith('$') ? amount.trim() : `$${amount.trim()}`) : '$1000',
+      bank: type === 'other' ? 'Other Bank' : undefined,
+    });
+  };
 
   return (
     <KeyboardAvoidingView style={styles.root} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -83,7 +96,7 @@ export default function TransferScreen({ navigation }: ScreenProps<'Transfer'>) 
             </View>
             <Text style={styles.checkText}>{t('Save to directory of beneficiary')}</Text>
           </Pressable>
-          <Button title={t('Confirm')} disabled={!ok} style={{ marginTop: 20 }} />
+          <Button title={t('Confirm')} disabled={!canGo} onPress={handleConfirm} style={{ marginTop: 20 }} />
         </Card>
       </ScrollView>
     </KeyboardAvoidingView>

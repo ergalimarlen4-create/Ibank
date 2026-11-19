@@ -20,6 +20,8 @@ import ExchangeRateScreen from './src/screens/ExchangeRateScreen';
 import LanguageScreen from './src/screens/LanguageScreen';
 import ExchangeScreen from './src/screens/ExchangeScreen';
 import TransferScreen from './src/screens/TransferScreen';
+import ConfirmScreen from './src/screens/ConfirmScreen';
+import TransferSuccessScreen from './src/screens/TransferSuccessScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -30,26 +32,28 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <LanguageProvider>
-      <StatusBar style="auto" />
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="SignIn" screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="SignIn" component={SignInScreen} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
-          <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-          <Stack.Screen name="Otp" component={OtpScreen} />
-          <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
-          <Stack.Screen name="PasswordChanged" component={PasswordChangedScreen} />
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Search" component={SearchScreen} />
-          <Stack.Screen name="SearchBranch" component={SearchBranchScreen} />
-          <Stack.Screen name="InterestRate" component={InterestRateScreen} />
-          <Stack.Screen name="ExchangeRate" component={ExchangeRateScreen} />
-          <Stack.Screen name="Language" component={LanguageScreen} />
-          <Stack.Screen name="Exchange" component={ExchangeScreen} />
-          <Stack.Screen name="Transfer" component={TransferScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </LanguageProvider>
+        <StatusBar style="auto" />
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="SignIn" screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
+            <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+            <Stack.Screen name="Otp" component={OtpScreen} />
+            <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
+            <Stack.Screen name="PasswordChanged" component={PasswordChangedScreen} />
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Search" component={SearchScreen} />
+            <Stack.Screen name="SearchBranch" component={SearchBranchScreen} />
+            <Stack.Screen name="InterestRate" component={InterestRateScreen} />
+            <Stack.Screen name="ExchangeRate" component={ExchangeRateScreen} />
+            <Stack.Screen name="Language" component={LanguageScreen} />
+            <Stack.Screen name="Exchange" component={ExchangeScreen} />
+            <Stack.Screen name="Transfer" component={TransferScreen} />
+            <Stack.Screen name="ConfirmScreen" component={ConfirmScreen} />
+            <Stack.Screen name="TransferSuccessScreen" component={TransferSuccessScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </LanguageProvider>
     </SafeAreaProvider>
   );
 }

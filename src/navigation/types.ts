@@ -15,6 +15,19 @@ export type RootStackParamList = {
   Language: undefined;
   Exchange: undefined;
   Transfer: undefined;
+  ConfirmScreen: {
+    fromCard?: string;
+    toName?: string;
+    cardNumber?: string;
+    fee?: string;
+    content?: string;
+    amount?: string;
+    bank?: string;
+  };
+  TransferSuccessScreen: {
+    amount?: string;
+    toName?: string;
+  };
 };
 
 export type ScreenProps<T extends keyof RootStackParamList> =
