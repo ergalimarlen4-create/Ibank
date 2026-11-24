@@ -8,6 +8,18 @@ import { ScreenProps } from '../navigation/types';
 
 type Icon = keyof typeof Ionicons.glyphMap;
 
+const routes: Record<string, string> = {
+  'Account\nand Card': 'AccountCard',
+  Transfer: 'Transfer',
+  Withdraw: 'Withdraw',
+  'Transaction\nreport': 'TransactionReport',
+  'Mobile\nprepaid': 'MobilePrepaid',
+  'Pay the\nbill': 'PayBill',
+  'Save\nonline': 'SaveOnline',
+  'Credit\ncard': 'CreditCard',
+  Beneficiary: 'Directory',
+};
+
 const actions: { label: string; icon: Icon; color: string }[] = [
   { label: 'Account\nand Card', icon: 'wallet', color: colors.primary },
   { label: 'Transfer', icon: 'swap-horizontal', color: colors.danger },
@@ -28,7 +40,9 @@ export default function HomeScreen({ navigation }: ScreenProps<'Home'>) {
       <View style={[styles.top, { paddingTop: insets.top + 12 }]}>
         <View style={styles.avatar}><Ionicons name="person" size={20} color={colors.primary} /></View>
         <Text style={styles.hi}>{t('Hi')}, Push Puttichai</Text>
-        <Ionicons name="notifications" size={20} color="#fff" />
+        <Pressable onPress={() => navigation.navigate('Messages')}>
+          <Ionicons name="notifications" size={20} color="#fff" />
+        </Pressable>
       </View>
 
       <ScrollView style={styles.sheet} contentContainerStyle={{ padding: 16 }}>
@@ -48,7 +62,7 @@ export default function HomeScreen({ navigation }: ScreenProps<'Home'>) {
             <Pressable
               key={a.label}
               style={styles.tile}
-              onPress={() => a.label === 'Transfer' && navigation.navigate('Transfer')}
+              onPress={() => routes[a.label] && navigation.navigate(routes[a.label] as any)}
             >
               <Ionicons name={a.icon} size={26} color={a.color} />
               <Text style={styles.tileText}>{t(a.label)}</Text>

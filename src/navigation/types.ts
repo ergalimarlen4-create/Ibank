@@ -15,19 +15,34 @@ export type RootStackParamList = {
   Language: undefined;
   Exchange: undefined;
   Transfer: undefined;
-  ConfirmScreen: {
-    fromCard?: string;
-    toName?: string;
-    cardNumber?: string;
-    fee?: string;
-    content?: string;
-    amount?: string;
-    bank?: string;
-  };
-  TransferSuccessScreen: {
-    amount?: string;
-    toName?: string;
-  };
+  TransferConfirm: { from: string; name: string; card: string; amount: string; content: string; bank?: string };
+  TransferSuccess: { amount: string; name: string };
+  Messages: undefined;
+  Chat: { id: string };
+  Setting: undefined;
+  AppInfo: undefined;
+  SettingPassword: undefined;
+  TransactionReport: undefined;
+  AccountCard: undefined;
+  CardDetail: undefined;
+  Withdraw: undefined;
+  MobilePrepaid: undefined;
+  PayBill: undefined;
+  PaymentHistory: { tab?: string } | undefined;
+  PaymentConfirm: { kind: 'withdraw' | 'prepaid' | 'bill' | 'save'; from: string; to: string; amount: string };
+  PaymentSuccess: { kind: 'withdraw' | 'prepaid' | 'bill' | 'save' | 'credit'; bill?: string };
+  BillCheck: { kind: string };
+  BillPay: { kind: string; company: string };
+  BillDetail: { kind: string };
+  SaveOnline: undefined;
+  SaveOnlineAdd: undefined;
+  ChooseCard: undefined;
+  SaveManagement: undefined;
+  Directory: undefined;
+  AddBeneficiary: undefined;
+  BeneficiaryDetail: { id: string };
+  CreditCard: undefined;
+  CreditPay: undefined;
 };
 
 export type ScreenProps<T extends keyof RootStackParamList> =

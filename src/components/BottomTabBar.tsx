@@ -13,8 +13,8 @@ type Icon = keyof typeof Ionicons.glyphMap;
 const tabs: { key: Tab; icon: string; label: string; to?: keyof RootStackParamList }[] = [
   { key: 'home', icon: 'home', label: 'Home', to: 'Home' },
   { key: 'search', icon: 'search', label: 'Search', to: 'Search' },
-  { key: 'mail', icon: 'mail', label: 'Mail' },
-  { key: 'settings', icon: 'settings', label: 'Settings', to: 'Language' },
+  { key: 'mail', icon: 'mail', label: 'Message', to: 'Messages' },
+  { key: 'settings', icon: 'settings', label: 'Setting', to: 'Setting' },
 ];
 
 export default function BottomTabBar({ active }: { active: Tab }) {
@@ -29,7 +29,12 @@ export default function BottomTabBar({ active }: { active: Tab }) {
           <Pressable
             key={t.key}
             style={on ? styles.on : styles.off}
-            onPress={() => !on && t.to && nav.navigate(t.to as any)}
+            onPress={() => {
+              if (on || !t.to) return;
+              if (t.to === 'Home') nav.popToTop();
+              else if (active === 'home') nav.navigate(t.to as any);
+              else nav.replace(t.to as any);
+            }}
           >
             <Ionicons name={(on ? t.icon : `${t.icon}-outline`) as Icon} size={on ? 16 : 22} color={on ? '#fff' : colors.muted} />
             {on && <Text style={styles.label}>{tr(t.label)}</Text>}

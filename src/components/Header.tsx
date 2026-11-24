@@ -1,12 +1,13 @@
+import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, fonts } from '../theme';
 
-type Props = { title?: string; onBack?: () => void; light?: boolean };
+type Props = { title?: string; onBack?: () => void; light?: boolean; right?: ReactNode };
 
 // light = true -> белый фон (Forgot/Change password), иначе фиолетовый
-export default function Header({ title, onBack, light }: Props) {
+export default function Header({ title, onBack, light, right }: Props) {
   const insets = useSafeAreaInsets();
   const fg = light ? colors.text : '#fff';
   return (
@@ -17,6 +18,7 @@ export default function Header({ title, onBack, light }: Props) {
         </Pressable>
       )}
       {title && <Text style={[styles.title, { color: fg }]}>{title}</Text>}
+      {right ? <View style={{ marginLeft: 'auto' }}>{right}</View> : null}
     </View>
   );
 }
