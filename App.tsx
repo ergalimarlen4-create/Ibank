@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, View } from 'react-native';
 import { useFonts, Poppins_400Regular, Poppins_500Medium, Poppins_600SemiBold } from '@expo-google-fonts/poppins';
 
 import { LanguageProvider } from './src/i18n';
@@ -48,6 +49,11 @@ import AddBeneficiaryScreen from './src/screens/AddBeneficiaryScreen';
 import BeneficiaryDetailScreen from './src/screens/BeneficiaryDetailScreen';
 import CreditCardScreen from './src/screens/CreditCardScreen';
 import CreditPayScreen from './src/screens/CreditPayScreen';
+import EditProfileScreen from './src/screens/EditProfileScreen';
+import FestiveScreen from './src/screens/FestiveScreen';
+import FestiveOverlay from './src/components/FestiveOverlay';
+import { FestiveProvider } from './src/data/festive';
+import { ProfileProvider } from './src/data/profile';
 import { BeneficiariesProvider } from './src/data/beneficiaries';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -60,6 +66,10 @@ export default function App() {
     <SafeAreaProvider>
       <LanguageProvider>
       <BeneficiariesProvider>
+      <ProfileProvider>
+      <FestiveProvider>
+      <View style={styles.page}>
+      <View style={styles.app}>
       <StatusBar style="auto" />
       <NavigationContainer>
         <Stack.Navigator initialRouteName="SignIn" screenOptions={{ headerShown: false }}>
@@ -105,10 +115,23 @@ export default function App() {
           <Stack.Screen name="BeneficiaryDetail" component={BeneficiaryDetailScreen} />
           <Stack.Screen name="CreditCard" component={CreditCardScreen} />
           <Stack.Screen name="CreditPay" component={CreditPayScreen} />
+          <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+          <Stack.Screen name="Festive" component={FestiveScreen} />
         </Stack.Navigator>
       </NavigationContainer>
-    </BeneficiariesProvider>
+      <FestiveOverlay />
+    </View>
+      </View>
+      </FestiveProvider>
+      </ProfileProvider>
+      </BeneficiariesProvider>
       </LanguageProvider>
     </SafeAreaProvider>
   );
 }
+
+// На широком экране (браузер) приложение показывается колонкой как на телефоне
+const styles = StyleSheet.create({
+  page: { flex: 1, backgroundColor: '#E9E9F0', alignItems: 'center' },
+  app: { flex: 1, width: '100%', maxWidth: 480, backgroundColor: '#fff', overflow: 'hidden' },
+});

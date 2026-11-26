@@ -43,6 +43,8 @@ export type RootStackParamList = {
   BeneficiaryDetail: { id: string };
   CreditCard: undefined;
   CreditPay: undefined;
+  EditProfile: undefined;
+  Festive: undefined;
 };
 
 export type ScreenProps<T extends keyof RootStackParamList> =

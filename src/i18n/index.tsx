@@ -1,5 +1,9 @@
 import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
-import { dict } from './dictionary';
+import { dict as baseDict } from './dictionary';
+import { extraDict } from './dictionary.extra';
+import { festiveDict } from './dictionary.festive';
+
+const dict: Record<string, { kk: string; ru: string }> = { ...baseDict, ...extraDict, ...festiveDict };
 
 export type Lang = 'kk' | 'ru' | 'en';
 type Ctx = { lang: Lang; setLang: (l: Lang) => void; t: (s: string) => string };

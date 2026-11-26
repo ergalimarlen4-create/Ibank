@@ -1,0 +1,51 @@
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+
+export type RootStackParamList = {
+  SignIn: undefined;
+  SignUp: undefined;
+  ForgotPassword: undefined;
+  Otp: { phone: string };
+  ChangePassword: undefined;
+  PasswordChanged: undefined;
+  Home: undefined;
+  Search: undefined;
+  SearchBranch: undefined;
+  InterestRate: undefined;
+  ExchangeRate: undefined;
+  Language: undefined;
+  Exchange: undefined;
+  Transfer: undefined;
+  TransferConfirm: { from: string; name: string; card: string; amount: string; content: string; bank?: string };
+  TransferSuccess: { amount: string; name: string };
+  Messages: undefined;
+  Chat: { id: string };
+  Setting: undefined;
+  AppInfo: undefined;
+  SettingPassword: undefined;
+  TransactionReport: undefined;
+  AccountCard: undefined;
+  CardDetail: undefined;
+  Withdraw: undefined;
+  MobilePrepaid: undefined;
+  PayBill: undefined;
+  PaymentHistory: { tab?: string } | undefined;
+  PaymentConfirm: { kind: 'withdraw' | 'prepaid' | 'bill' | 'save'; from: string; to: string; amount: string };
+  PaymentSuccess: { kind: 'withdraw' | 'prepaid' | 'bill' | 'save' | 'credit'; bill?: string };
+  BillCheck: { kind: string };
+  BillPay: { kind: string; company: string };
+  BillDetail: { kind: string };
+  SaveOnline: undefined;
+  SaveOnlineAdd: undefined;
+  ChooseCard: undefined;
+  SaveManagement: undefined;
+  Directory: undefined;
+  AddBeneficiary: undefined;
+  BeneficiaryDetail: { id: string };
+  CreditCard: undefined;
+  CreditPay: undefined;
+  EditProfile: undefined;
+  Festive: undefined;
+};
+
+export type ScreenProps<T extends keyof RootStackParamList> =
+  NativeStackScreenProps<RootStackParamList, T>;
